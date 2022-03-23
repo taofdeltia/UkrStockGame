@@ -2,21 +2,25 @@ from bs4 import BeautifulSoup
 import requests
 import nums_from_string
 
-url = 'http://www.ux.ua/ua/issue.aspx?code=MSICH'
-page = requests.get(url)
+code = input("CODE: ")
 
-print(page.status_code)
+def name():
+	if code == "KVBZ":
+		compName="Крюківський вагонобудівний завод"
+		print(compName)
 
-soup = BeautifulSoup(page.text, "html.parser")
 
-table = []
+class lastPrice:
+	url = 'http://www.ux.ua/ua/issue.aspx?code='+code
+	page = requests.get(url)
+	soup = BeautifulSoup(page.text, "html.parser")
 
-table = soup.findAll("td", class_='pvalue')
-tableStr = str(table)
-tableFin = tableStr.split(",")
-block = tableFin[4]
-cenaMassive = nums_from_string.get_nums(block)
-cena=''.join(str(x) for x in cenaMassive)
+	table = []
+	table = str(soup.findAll("td", class_='pvalue')).split(" ")
+	block = table[15].replace(",",".")
+	priceArray = nums_from_string.get_nums(block)
+	price=''.join(str(x) for x in priceArray)
 
-print("Остання угода - ",cena)
-print(block)
+name()
+print("Остання угода - ",lastPrice().price)
+
